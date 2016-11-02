@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace XFFilter.View
@@ -17,12 +19,12 @@ namespace XFFilter.View
 			Categories.Add (new Model.Category { Name = "Fourth", Value = "Fourth", Selected = true });
 			Categories.Add (new Model.Category { Name = "Fifth", Value = "Fifth", Selected = false });
 			Categories.Add (new Model.Category { Name = "Sixth", Value = "Sixth", Selected = false });
-
+			BindingContext = this;
 			InitializeComponent ();
 
-			filter.Clicked += (sender, e) => {
-				Navigation.PushAsync (new CategoryPage (Categories));
-			};
+			//filter.Clicked += (sender, e) => {
+			//	Navigation.PushAsync (new CategoryPage (Categories));
+			//};
 		}
 
 		protected override void OnAppearing ()
@@ -42,5 +44,12 @@ namespace XFFilter.View
 			}
 			base.OnAppearing ();
 		}
-	}
+
+		public ICommand FilterCommand => new Command (GoToFilterPage);
+
+		void GoToFilterPage (object obj)
+		{
+			Navigation.PushAsync (new CategoryPage (Categories));
+		}
+}
 }
